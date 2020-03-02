@@ -1,5 +1,10 @@
 package cz.muni.fi.pa165.currency;
 
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Currency;
@@ -10,16 +15,20 @@ import java.util.Currency;
  *
  * @author petr.adamek@embedit.cz
  */
+@Named
+@Aspect
 public class CurrencyConvertorImpl implements CurrencyConvertor {
 
     private final ExchangeRateTable exchangeRateTable;
     //private final Logger logger = LoggerFactory.getLogger(CurrencyConvertorImpl.class);
 
+    @Inject // optional, if only one constructor is present (in newer version of spring)
     public CurrencyConvertorImpl(ExchangeRateTable exchangeRateTable) {
         this.exchangeRateTable = exchangeRateTable;
     }
 
     @Override
+    @Before()
     public BigDecimal convert(Currency sourceCurrency, Currency targetCurrency, BigDecimal sourceAmount) {
         if (sourceCurrency == null) {
             throw new IllegalArgumentException("sourceCurrency is null");
