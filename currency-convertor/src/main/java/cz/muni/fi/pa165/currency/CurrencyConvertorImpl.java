@@ -28,7 +28,6 @@ public class CurrencyConvertorImpl implements CurrencyConvertor {
     }
 
     @Override
-    @Before()
     public BigDecimal convert(Currency sourceCurrency, Currency targetCurrency, BigDecimal sourceAmount) {
         if (sourceCurrency == null) {
             throw new IllegalArgumentException("sourceCurrency is null");
