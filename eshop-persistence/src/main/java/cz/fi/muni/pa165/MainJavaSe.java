@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -27,7 +28,7 @@ public class MainJavaSe {
 		emf = Persistence.createEntityManagerFactory("default");
 		try {
 			// BEGIN YOUR CODE
-			task04();
+			task06();
 			// END YOUR CODE
 		} finally {
 			emf.close();
@@ -41,6 +42,16 @@ public class MainJavaSe {
 		// You must first obtain the Entity manager
 		// Then you have to start transaction using getTransaction().begin()
 		// Then use persist() to persist both of the categories and finally commit the transaction
+		EntityManager manager = emf.createEntityManager();
+		manager.getTransaction().begin();
+		Category c1 = new Category();
+		c1.setName("Electronics");
+		Category c2 = new Category();
+		c2.setName("Musical");
+		manager.persist(c1);
+		manager.persist(c2);
+		manager.getTransaction().commit();
+		manager.close();
 
 		// The code below is just testing code. Do not modify it
 		EntityManager em = emf.createEntityManager();
@@ -73,6 +84,13 @@ public class MainJavaSe {
 		// TODO under this line. create new entity manager and start new transaction. Merge
 		// the detached category
 		// into the context and change the name to "Electro"
+		EntityManager manager = emf.createEntityManager();
+		manager.getTransaction().begin();
+		Category merged = manager.merge(category);
+		merged.setName("Electro");
+		manager.getTransaction().commit();
+		manager.close();
+
 
 		// The code below is just testing code. Do not modify it
 		EntityManager checkingEm = emf.createEntityManager();
@@ -98,9 +116,18 @@ public class MainJavaSe {
 		// * dateAdded = 20-01-2011 - to fill java.util.Date use Calendar 
 		//
 		// Additional task: Change the underlying table of Product entity to be ESHOP_PRODUCTS. After you do this, check this by inspecting console output (the CREATE TABLE statement)
-		//
 
-/** TODO uncoment all the code below after you finish the TODO's
+        EntityManager manager = emf.createEntityManager();
+        manager.getTransaction().begin();
+        Product product = new Product();
+        product.setName("Guitar");
+        product.setColor(Color.BLACK);
+        product.setAddedDate(LocalDate.of(2011, Month.JANUARY, 20));
+        manager.persist(product);
+        manager.getTransaction().commit();
+        manager.close();
+
+// TODO uncoment all the code below after you finish the TODO's
 
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
@@ -135,7 +162,6 @@ public class MainJavaSe {
 		em.close();
 
 		System.out.println("Task6 ok!");
-**/
 	}
 	
 	private static void task07() {
